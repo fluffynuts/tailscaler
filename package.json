@@ -1,0 +1,19 @@
+{
+  "name": "tailscaler",
+  "version": "1.0.0",
+  "description": "an unofficial tailscale notification icon for !windows",
+  "main": "index.js",
+  "scripts": {
+    "publish": "dotnet publish src/tailscaler/tailscaler.csproj -c Release -r linux-x64 --self-contained --output bin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fluffynuts/tailscaler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fluffynuts/tailscaler/issues"
+  },
+  "homepage": "https://github.com/fluffynuts/tailscaler#readme"
+}
