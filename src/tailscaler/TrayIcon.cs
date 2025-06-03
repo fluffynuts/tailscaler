@@ -64,7 +64,17 @@ public class TrayIcon : IDisposable
 
         tailscale.OnConnected += SetConnectedIcon;
         tailscale.OnDisconnected += SetDisconnectedIcon;
-        tailscale.OnConnecting = StartSpinner;
+        tailscale.OnConnecting += StartSpinner;
+        tailscale.OnError += OnError;
+    }
+
+    private void OnError(
+        object sender,
+        EventArgs e
+    )
+    {
+        StopSpinner();
+        IconPath = FindIcon("error");
     }
 
     private CancellationTokenSource _spinning;
@@ -160,6 +170,7 @@ public class TrayIcon : IDisposable
                 e
             ) =>
             {
+                StopSpinner();
                 _source.Cancel();
             }
         };

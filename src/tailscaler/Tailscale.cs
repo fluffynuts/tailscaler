@@ -11,6 +11,7 @@ public class Tailscale
     public EventHandler<EventArgs> OnConnecting { get; set; }
     public EventHandler<EventArgs> OnConnected { get; set; }
     public EventHandler<EventArgs> OnDisconnected { get; set; }
+    public EventHandler<EventArgs> OnError { get; set; }
 
     public Tailscale()
     {
@@ -91,6 +92,11 @@ public class Tailscale
                 if (!wasInteractive && io.ExitCode == 0)
                 {
                     OnConnected(this, EventArgs.Empty);
+                }
+
+                if (io.ExitCode != 0)
+                {
+                    OnError(this, EventArgs.Empty);
                 }
             }
         );
