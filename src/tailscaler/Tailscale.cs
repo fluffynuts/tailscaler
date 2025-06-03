@@ -42,11 +42,16 @@ public class Tailscale
             {
                 using var _ = new AutoLocker(_lck);
                 OnConnecting(this, EventArgs.Empty);
+                var currentUser = Environment.GetEnvironmentVariable("USER");
+                var opString = string.IsNullOrWhiteSpace(currentUser)
+                    ? ""
+                    : $"--operator={currentUser}";
+                var wasInteractive = false;
                 using var io = ProcessIO
-                    .WithPassthroughIo()
                     .WithStdErrReceiver(
                         s =>
                         {
+                            wasInteractive = true;
                             var trimmed = s.Trim();
                             Console.WriteLine($"stderr: {trimmed}");
                             if (trimmed.StartsWith("https://login.tailscale.com"))
@@ -69,7 +74,7 @@ public class Tailscale
                             Console.WriteLine($"stdout: {s}");
                         }
                     )
-                    .Start("tailscale", "up", "--operator=davydm", "--accept-routes");
+                    .Start("tailscale", "up", opString, "--accept-routes");
                 // TODO: open up the web ui with 'tailscale web' when there's a challenge
                 /* tailscale emits
                  * To authenticate, visit:
@@ -80,6 +85,13 @@ public class Tailscale
                       >>> emitted after login <<<
                  */
                 io.WaitForExit();
+
+                // When tailscale can just connect, without
+                // login, we get no output, just a success status code
+                if (!wasInteractive && io.ExitCode == 0)
+                {
+                    OnConnected(this, EventArgs.Empty);
+                }
             }
         );
     }

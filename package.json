@@ -4,7 +4,9 @@
   "description": "an unofficial tailscale notification icon for !windows",
   "main": "index.js",
   "scripts": {
-    "publish": "dotnet publish src/tailscaler/tailscaler.csproj -c Release -r linux-x64 --self-contained --output bin"
+    "publish": "dotnet publish src/tailscaler/tailscaler.csproj -c Release -r linux-x64 --self-contained --output bin",
+    "prepack": "run-s publish",
+    "pack": "cp -Rvf bin tailscaler && zip -9 tailscaler.zip tailscaler && rm -rf tailscaler"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/fluffynuts/tailscaler/issues"
   },
-  "homepage": "https://github.com/fluffynuts/tailscaler#readme"
+  "homepage": "https://github.com/fluffynuts/tailscaler#readme",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
 }

@@ -80,6 +80,7 @@ public class TrayIcon : IDisposable
             return; // already spinning
         }
 
+        _spinning?.Cancel();
         _spinning = new CancellationTokenSource();
 
         _spinningThread = new Thread(
@@ -92,6 +93,11 @@ public class TrayIcon : IDisposable
                     {
                         foreach (var item in _spinnerPaths)
                         {
+                            if (_spinning.IsCancellationRequested)
+                            {
+                                break;
+                            }
+
                             IconPath = item;
                             if (!timeUtil.Sleep(500, _spinning))
                             {
@@ -204,7 +210,6 @@ public class TrayIcon : IDisposable
             }
         };
     }
-
 
     public string FindIcon(
         string withName

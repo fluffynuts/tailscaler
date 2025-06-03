@@ -8,6 +8,7 @@ public class Monitor : IDisposable
 {
     private Thread _monitorThread;
     private CancellationTokenSource _cancellationTokenSource;
+    private bool _paused;
 
     public void Start(
         CancellationTokenSource source,
@@ -38,7 +39,6 @@ public class Monitor : IDisposable
                     timeUtil.SleepUntil(timeUtil.NextSecond(), source);
                 } while (!source.IsCancellationRequested);
 
-                source.Cancel();
                 Console.WriteLine("Exiting");
             }
         );
