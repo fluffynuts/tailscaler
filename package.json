@@ -6,7 +6,8 @@
   "scripts": {
     "publish": "dotnet publish src/tailscaler/tailscaler.csproj -c Release -r linux-x64 --self-contained --output bin",
     "prepack": "run-s publish",
-    "pack": "cp -Rvf bin tailscaler && zip -9 tailscaler.zip tailscaler && rm -rf tailscaler"
+    "pack": "cp -Rvf bin tailscaler && zip -9 tailscaler.zip tailscaler && rm -rf tailscaler",
+    "start": "dotnet run --project src/tailscaler/tailscaler.csproj"
   },
   "repository": {
     "type": "git",

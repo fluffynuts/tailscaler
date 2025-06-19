@@ -8,7 +8,6 @@ public class Monitor : IDisposable
 {
     private Thread _monitorThread;
     private CancellationTokenSource _cancellationTokenSource;
-    private bool _paused;
 
     public void Start(
         CancellationTokenSource source,
